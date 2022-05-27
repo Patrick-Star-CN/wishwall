@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"wishwall/app/midwares"
+	"wishwall/config/config"
 	"wishwall/config/database"
 	"wishwall/config/router"
 	"wishwall/config/session"
@@ -23,7 +24,7 @@ func main() {
 	session.Init(r)
 	router.Init(r)
 
-	err := r.Run()
+	err := r.Run(":" + config.Config.GetString("router.port"))
 	if err != nil {
 		log.Fatal("ServerStartFailed", err)
 	}

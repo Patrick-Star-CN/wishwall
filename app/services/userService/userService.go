@@ -37,6 +37,19 @@ func GetUser(username string) (*models.User, error) {
 	return user, nil
 }
 
+func GetUID(username string) (int, error) {
+	var user *models.User
+
+	result := database.DB.Where(
+		&models.User{
+			Name: username,
+		}).Find(&user)
+	if result.Error != nil {
+		return -1, result.Error
+	}
+	return user.ID, nil
+}
+
 func GetUserID(id int) (*models.User, error) {
 	var user *models.User
 

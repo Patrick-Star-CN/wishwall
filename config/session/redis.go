@@ -15,6 +15,9 @@ type redisConfig struct {
 
 func setRedis(r *gin.Engine, name string) {
 	Info := getRedisConfig()
-	store, _ := sessionRedis.NewStore(10, "tcp", Info.Host+":"+Info.Port, "", []byte("secret"))
+	store, err := sessionRedis.NewStore(10, "tcp", Info.Host+":"+Info.Port, "", []byte("secret"))
+	if err != nil {
+		panic(err)
+	}
 	r.Use(sessions.Sessions(name, store))
 }

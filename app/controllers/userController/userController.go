@@ -21,14 +21,14 @@ func Login(c *gin.Context) {
 
 	errBind := c.ShouldBindJSON(&req)
 	if errBind != nil {
-		log.Println("request parameter error")
+		log.Println("request parameter error:" + errBind.Error())
 		_ = c.AbortWithError(200, apiExpection.ParamError)
 		return
 	}
 
 	user, err := userService.GetUser(req.Username)
 	if err != nil {
-		log.Println("table user error")
+		log.Println("table user error:" + err.Error())
 		_ = c.AbortWithError(200, apiExpection.ServerError)
 		return
 	}
@@ -42,7 +42,7 @@ func Login(c *gin.Context) {
 
 	err = sessionService.SetUserSession(c, user)
 	if err != nil {
-		log.Println("set session error")
+		log.Println("set session error:" + err.Error())
 		_ = c.AbortWithError(200, apiExpection.ServerError)
 		return
 	}
@@ -55,14 +55,14 @@ func Register(c *gin.Context) {
 
 	errBind := c.ShouldBindJSON(&req)
 	if errBind != nil {
-		log.Println("request parameter error")
+		log.Println("request parameter error:" + errBind.Error())
 		_ = c.AbortWithError(200, apiExpection.ParamError)
 		return
 	}
 
 	user, err := userService.GetUser(req.Username)
 	if err != nil {
-		log.Println("table user error")
+		log.Println("table user error:" + err.Error())
 		_ = c.AbortWithError(200, apiExpection.ServerError)
 		return
 	}
@@ -76,14 +76,21 @@ func Register(c *gin.Context) {
 		Pwd:  req.Pwd,
 	})
 	if err != nil {
-		log.Println("table user error")
+		log.Println("table user error:" + err.Error())
+		_ = c.AbortWithError(200, apiExpection.ServerError)
+		return
+	}
+
+	user, err = userService.GetUser(req.Username)
+	if err != nil {
+		log.Println("table user error:" + err.Error())
 		_ = c.AbortWithError(200, apiExpection.ServerError)
 		return
 	}
 
 	err = sessionService.SetUserSession(c, user)
 	if err != nil {
-		log.Println("set session error")
+		log.Println("set session error:" + err.Error())
 		_ = c.AbortWithError(200, apiExpection.ServerError)
 		return
 	}
