@@ -6,6 +6,7 @@ import (
 	"wishwall/app/apiExpection"
 	"wishwall/app/models"
 	"wishwall/app/services/sessionService"
+	"wishwall/app/services/stuService"
 	"wishwall/app/services/userService"
 	"wishwall/app/utils"
 )
@@ -67,6 +68,18 @@ func Register(c *gin.Context) {
 		return
 	}
 	if user.Name == req.Username {
+		utils.JsonSuccessResponse(c, "USERNAME_REGISTERED", nil)
+		return
+	}
+
+	var stu *models.Stu
+	stu, err = stuService.GetStu(req.Username)
+	if err != nil {
+		log.Println("table stu error:" + err.Error())
+		_ = c.AbortWithError(200, apiExpection.ServerError)
+		return
+	}
+	if stu.Num != req.Username {
 		utils.JsonSuccessResponse(c, "USERNAME_ERROR", nil)
 		return
 	}
