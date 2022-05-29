@@ -112,6 +112,7 @@ func CreateWish(c *gin.Context) {
 		Content: req.Content,
 		Name:    req.Name,
 		UID:     user.ID,
+		IsClaim: false,
 	})
 	if err != nil {
 		log.Println("table wish error" + err.Error())
@@ -196,7 +197,7 @@ func ChangeWish(c *gin.Context) {
 
 	err = wishService.UpdateWish(models.Wish{
 		ID:       req.ID,
-		UID:      user.ID,
+		UID:      req.ID,
 		Content:  req.Content,
 		Name:     req.Name,
 		IsClaim:  req.IsClaim,
