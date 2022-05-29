@@ -3,7 +3,6 @@ package claimController
 import (
 	"github.com/gin-gonic/gin"
 	"log"
-	"strconv"
 	"wishwall/app/apiExpection"
 	"wishwall/app/controllers/wishController"
 	"wishwall/app/models"
@@ -14,8 +13,14 @@ import (
 
 func SubmitClaim(c *gin.Context) {
 	log.SetFlags(log.Lshortfile | log.Ldate | log.Lmicroseconds)
-	id_ := c.Query("id")
-	id, _ := strconv.Atoi(id_)
+	var req wishController.Req
+
+	errBind := c.ShouldBindJSON(&req)
+	if errBind != nil {
+		log.Println("request parameter error:" + errBind.Error())
+		_ = c.AbortWithError(200, apiExpection.ParamError)
+		return
+	}
 
 	user, err := sessionService.GetUserSession(c)
 	if err != nil {
@@ -29,18 +34,18 @@ func SubmitClaim(c *gin.Context) {
 	}
 
 	var wish *models.Wish
-	wish, err = wishService.GetWishID(id)
+	wish, err = wishService.GetWishID(req.ID)
 	if wish.IsClaim {
 		utils.JsonSuccessResponse(c, "CLAIMED", nil)
 		return
-	} else if wish.ID != id {
+	} else if wish.ID != req.ID {
 		utils.JsonSuccessResponse(c, "ID_ERROR", nil)
 		return
 	}
 	err = wishService.UpdateWish(models.Wish{
 		Name:     wish.Name,
 		Content:  wish.Content,
-		ID:       id,
+		ID:       req.ID,
 		UID:      wish.UID,
 		IsClaim:  true,
 		ClaimUID: user.ID,

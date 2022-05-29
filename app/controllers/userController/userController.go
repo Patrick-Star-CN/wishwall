@@ -96,3 +96,24 @@ func Register(c *gin.Context) {
 	}
 	utils.JsonSuccessResponse(c, "SUCCESS", nil)
 }
+
+func LoginOut(c *gin.Context) {
+	log.SetFlags(log.Lshortfile | log.Ldate | log.Lmicroseconds)
+	_, errSession := sessionService.GetUserSession(c)
+	if errSession != nil {
+		_ = c.AbortWithError(200, apiExpection.NotLogin)
+		return
+	}
+
+	sessionService.ClearUserSession(c)
+	utils.JsonSuccessResponse(c, "SUCCESS", nil)
+}
+
+func CheckLogin(c *gin.Context) {
+	log.SetFlags(log.Lshortfile | log.Ldate | log.Lmicroseconds)
+	if sessionService.CheckUserSession(c) {
+		utils.JsonSuccessResponse(c, "SUCCESS", nil)
+	} else {
+		_ = c.AbortWithError(200, apiExpection.NotLogin)
+	}
+}

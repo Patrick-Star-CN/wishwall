@@ -58,7 +58,6 @@ func GetWishUser(c *gin.Context) {
 	log.SetFlags(log.Lshortfile | log.Ldate | log.Lmicroseconds)
 	user, errSession := sessionService.GetUserSession(c)
 	if errSession != nil {
-		log.Println("session error:" + errSession.Error())
 		_ = c.AbortWithError(200, apiExpection.NotLogin)
 		return
 	}
@@ -107,7 +106,6 @@ func CreateWish(c *gin.Context) {
 
 	user, err := sessionService.GetUserSession(c)
 	if err != nil {
-		log.Println("session error:" + err.Error())
 		_ = c.AbortWithError(200, apiExpection.NotLogin)
 		return
 	}
@@ -141,7 +139,6 @@ func DelWish(c *gin.Context) {
 
 	user, errSession := sessionService.GetUserSession(c)
 	if errSession != nil {
-		log.Println("session error:" + errSession.Error())
 		_ = c.AbortWithError(200, apiExpection.NotLogin)
 		return
 	}
@@ -187,7 +184,6 @@ func ChangeWish(c *gin.Context) {
 
 	user, err := sessionService.GetUserSession(c)
 	if err != nil {
-		log.Println("session error:" + err.Error())
 		_ = c.AbortWithError(200, apiExpection.NotLogin)
 		return
 	}
