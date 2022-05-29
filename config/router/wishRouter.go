@@ -8,4 +8,6 @@ import (
 func wishRouter(r *gin.RouterGroup) {
 	r.POST("/submitWish", wishController.CreateWish)
 	r.GET("/getWish", wishController.GetWish)
+	r.GET("/getUserWish", wishController.GetWishUser)
+	r.DELETE("/deleteWish", wishController.DelWish)
 }

@@ -1,7 +1,8 @@
 package models
 
 type User struct {
-	ID   int
-	Name string
-	Pwd  string
+	ID      int
+	Name    string
+	Pwd     string
+	IsAdmin bool
 }

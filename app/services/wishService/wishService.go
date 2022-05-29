@@ -26,6 +26,19 @@ func GetWishUser(uid int) ([]models.Wish, error) {
 	return wish, nil
 }
 
+func GetWishID(id int) (*models.Wish, error) {
+	var wish *models.Wish
+
+	result := database.DB.Where(
+		&models.Wish{
+			ID: id,
+		}).Find(&wish)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return wish, nil
+}
+
 func GetWishAll() ([]models.Wish, error) {
 	var wish []models.Wish
 

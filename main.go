@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"log"
 	"wishwall/app/midwares"
@@ -16,7 +15,7 @@ func main() {
 	database.Init()
 
 	r := gin.Default()
-	r.Use(cors.Default())
+	r.Use(midwares.Cors())
 	r.Use(midwares.ErrHandler())
 	r.NoMethod(midwares.HandleNotFound)
 	r.NoRoute(midwares.HandleNotFound)
