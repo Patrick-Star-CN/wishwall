@@ -53,7 +53,7 @@ func UpdateWish(wish models.Wish) error {
 	result := database.DB.Model(models.Wish{}).Where(
 		&models.Wish{
 			ID: wish.ID,
-		}).Updates(&wish)
+		}).Select("*").Updates(&wish)
 	if result.Error != nil {
 		return result.Error
 	}

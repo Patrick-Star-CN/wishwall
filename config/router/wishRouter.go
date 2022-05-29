@@ -10,5 +10,5 @@ func wishRouter(r *gin.RouterGroup) {
 	r.GET("/getWish", wishController.GetWish)
 	r.GET("/getUserWish", wishController.GetWishUser)
 	r.DELETE("/deleteWish", wishController.DelWish)
-	r.POST("/changeWish", wishController.ChangeWish)
+	r.Any("/changeWish", wishController.ChangeWish)
 }

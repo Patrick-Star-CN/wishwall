@@ -10,5 +10,6 @@ func Init(r *gin.Engine) {
 	{
 		userRouter(api)
 		wishRouter(api)
+		claimRouter(api)
 	}
 }
