@@ -43,12 +43,12 @@ func SubmitClaim(c *gin.Context) {
 		return
 	}
 	err = wishService.UpdateWish(models.Wish{
-		Name:     wish.Name,
-		Content:  wish.Content,
-		ID:       req.ID,
-		UID:      wish.UID,
-		IsClaim:  true,
-		ClaimUID: user.ID,
+		Name:      wish.Name,
+		Content:   wish.Content,
+		ID:        req.ID,
+		UID:       wish.UID,
+		IsClaim:   true,
+		ClaimName: user.Name,
 	})
 	if err != nil {
 		log.Println("table wish error:" + err.Error())
@@ -86,17 +86,17 @@ func CancelClaim(c *gin.Context) {
 	if wish.ID != req.ID || !wish.IsClaim {
 		utils.JsonSuccessResponse(c, "ID_ERROR", nil)
 		return
-	} else if wish.ClaimUID != user.ID {
+	} else if wish.ClaimName != user.Name {
 		utils.JsonSuccessResponse(c, "UID_ERROR", nil)
 		return
 	}
 	err = wishService.UpdateWish(models.Wish{
-		Name:     wish.Name,
-		Content:  wish.Content,
-		ID:       wish.ID,
-		UID:      wish.UID,
-		IsClaim:  false,
-		ClaimUID: 0,
+		Name:      wish.Name,
+		Content:   wish.Content,
+		ID:        wish.ID,
+		UID:       wish.UID,
+		IsClaim:   false,
+		ClaimName: "",
 	})
 	if err != nil {
 		log.Println("table wish error:" + err.Error())

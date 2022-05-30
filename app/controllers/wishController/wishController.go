@@ -20,11 +20,11 @@ type Req struct {
 }
 
 type WishReqUser struct {
-	ID       int    `json:"id"`
-	Name     string `json:"name"`
-	Content  string `json:"content"`
-	IsClaim  bool   `json:"isClaim"`
-	ClaimUID int    `json:"claimUID"`
+	ID        int    `json:"id"`
+	Name      string `json:"name"`
+	Content   string `json:"content"`
+	IsClaim   bool   `json:"isClaim"`
+	ClaimName string `json:"claimName"`
 }
 
 func GetWish(c *gin.Context) {
@@ -40,11 +40,11 @@ func GetWish(c *gin.Context) {
 	nums := utils.GenerateRandomNumber(0, len(wishes), utils.Min(len(wishes), 9))
 	for _, num := range nums {
 		data = append(data, WishReqUser{
-			Name:     wishes[num].Name,
-			Content:  wishes[num].Content,
-			IsClaim:  wishes[num].IsClaim,
-			ClaimUID: wishes[num].ClaimUID,
-			ID:       wishes[num].ID,
+			Name:      wishes[num].Name,
+			Content:   wishes[num].Content,
+			IsClaim:   wishes[num].IsClaim,
+			ClaimName: wishes[num].ClaimName,
+			ID:        wishes[num].ID,
 		})
 	}
 
@@ -79,11 +79,11 @@ func GetWishUser(c *gin.Context) {
 	var data []WishReqUser
 	for _, wish := range wishes {
 		data = append(data, WishReqUser{
-			ID:       wish.ID,
-			Name:     wish.Name,
-			Content:  wish.Content,
-			IsClaim:  wish.IsClaim,
-			ClaimUID: wish.ClaimUID,
+			ID:        wish.ID,
+			Name:      wish.Name,
+			Content:   wish.Content,
+			IsClaim:   wish.IsClaim,
+			ClaimName: wish.ClaimName,
 		})
 	}
 
@@ -111,11 +111,11 @@ func CreateWish(c *gin.Context) {
 	}
 
 	err = wishService.CreateWish(models.Wish{
-		Content:  req.Content,
-		Name:     req.Name,
-		UID:      user.ID,
-		IsClaim:  false,
-		ClaimUID: 0,
+		Content:   req.Content,
+		Name:      req.Name,
+		UID:       user.ID,
+		IsClaim:   false,
+		ClaimName: "",
 	})
 	if err != nil {
 		log.Println("table wish error" + err.Error())
@@ -203,12 +203,12 @@ func ChangeWish(c *gin.Context) {
 	}
 
 	err = wishService.UpdateWish(models.Wish{
-		ID:       req.ID,
-		UID:      req.ID,
-		Content:  req.Content,
-		Name:     req.Name,
-		IsClaim:  req.IsClaim,
-		ClaimUID: req.ClaimUID,
+		ID:        req.ID,
+		UID:       req.ID,
+		Content:   req.Content,
+		Name:      req.Name,
+		IsClaim:   req.IsClaim,
+		ClaimName: req.ClaimName,
 	})
 	if err != nil {
 		log.Println("table wish error" + err.Error())

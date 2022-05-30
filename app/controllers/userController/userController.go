@@ -85,8 +85,9 @@ func Register(c *gin.Context) {
 	}
 
 	err = userService.CreateUser(models.User{
-		Name: req.Username,
-		Pwd:  req.Pwd,
+		Name:    req.Username,
+		Pwd:     req.Pwd,
+		IsAdmin: false,
 	})
 	if err != nil {
 		log.Println("table user error:" + err.Error())
