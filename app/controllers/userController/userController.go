@@ -125,9 +125,11 @@ func LoginOut(c *gin.Context) {
 
 func CheckLogin(c *gin.Context) {
 	log.SetFlags(log.Lshortfile | log.Ldate | log.Lmicroseconds)
-	if sessionService.CheckUserSession(c) {
-		utils.JsonSuccessResponse(c, "SUCCESS", nil)
-	} else {
+	user, errSession := sessionService.GetUserSession(c)
+	if errSession != nil {
 		_ = c.AbortWithError(200, apiExpection.NotLogin)
+		return
 	}
+
+	utils.JsonSuccessResponse(c, "SUCCESS", user.Name)
 }

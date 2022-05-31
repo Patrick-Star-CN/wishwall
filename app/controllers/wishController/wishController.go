@@ -6,6 +6,7 @@ import (
 	"wishwall/app/apiExpection"
 	"wishwall/app/models"
 	"wishwall/app/services/sessionService"
+	"wishwall/app/services/userService"
 	"wishwall/app/services/wishService"
 	"wishwall/app/utils"
 )
@@ -202,9 +203,16 @@ func ChangeWish(c *gin.Context) {
 		return
 	}
 
+	user, err = userService.GetUser(req.Name)
+	if err != nil {
+		log.Println("table user error" + err.Error())
+		_ = c.AbortWithError(200, apiExpection.ServerError)
+		return
+	}
+
 	err = wishService.UpdateWish(models.Wish{
 		ID:        req.ID,
-		UID:       req.ID,
+		UID:       user.ID,
 		Content:   req.Content,
 		Name:      req.Name,
 		IsClaim:   req.IsClaim,
