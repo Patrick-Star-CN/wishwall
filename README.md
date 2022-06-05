@@ -10,6 +10,8 @@
 go build
 ```
 
+按照 `config_example.yaml` 文件的格式来写一个配置文件，保存在根目录下即可运行。
+
 ## 前端库
 
 [wishwall](https://github.com/codelover123hxy/wishwall)
